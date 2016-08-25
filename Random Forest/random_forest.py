@@ -1,8 +1,12 @@
 import csv
 import numpy as np
 from sklearn import datasets, svm, metrics
+from sklearn.ensemble import RandomForestClassifier
+import warnings
 
-with open('data/train.csv', 'rb') as csvfile:
+warnings.filterwarnings('ignore')
+
+with open('../data/train.csv', 'rb') as csvfile:
     training_data = np.loadtxt(csvfile, delimiter=',')
 
 # Permute data
@@ -20,10 +24,10 @@ fit_data = data[:fit_size]
 fit_target = target[:fit_size]
 
 # Fit random forest
-classifier = svm.SVC(gamma = 1e-6)
-classifier.fit(fit_data, fit_target)
+forest = RandomForestClassifier(n_estimators=50, n_jobs=2, max_features=None)
+forest.fit(fit_data, fit_target)
 
 # Predict and check result on remaining data
-expected = target[fit_size:]
-predicted = classifier.predict(data[fit_size:])
-print("Classification report for classifier {}:\n{}\n".format(classifier, metrics.classification_report(expected, predicted)))
+forest_expected = target[fit_size:]
+forest_predicted = forest.predict(data[fit_size:])
+print("Classification report for classifier {}:\n{}\n".format(forest, metrics.classification_report(forest_expected, forest_predicted)))

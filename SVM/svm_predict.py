@@ -3,10 +3,10 @@ import numpy as np
 from sklearn import datasets, svm, metrics
 
 # Read in data
-with open('data/train.csv', 'rb') as csvfile:
+with open('../data/train.csv', 'rb') as csvfile:
     training_data = np.loadtxt(csvfile, delimiter=',')
 
-with open('data/test.csv', 'rb') as csvfile:
+with open('../data/test.csv', 'rb') as csvfile:
     test_data = np.loadtxt(csvfile, delimiter=',')
 
 # Define classifier
