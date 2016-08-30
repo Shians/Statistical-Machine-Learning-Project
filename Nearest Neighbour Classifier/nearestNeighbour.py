@@ -44,8 +44,8 @@ targetTest = target[trainSize:]
 kVec = np.arange(7, 12, 1)
 
 for k in kVec:
-    # fit nearest neighbours classifier
-    neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto')
+    # fit nearest neighbours classifier (with L2-norm)
+    neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
     neigh.fit(dataTrain, targetTrain)
 
     # find accuracy on test data
