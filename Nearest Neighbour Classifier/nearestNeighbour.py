@@ -4,10 +4,10 @@ from sklearn.neighbors import KNeighborsClassifier
 import os
 
 
-full_train_path = os.path.join(os.getcwd(), "data", "train.csv")
-small_train_path = os.path.join(os.getcwd(), "data", "smallTrain.csv")
+full_train_path = os.path.join(os.getcwd(), "..", "data", "train.csv")
+small_train_path = os.path.join(os.getcwd(), "..", "data", "smallTrain.csv")
 
-useFull = True
+useFull = False
 
 if (useFull):
     # import full training data set
@@ -52,7 +52,7 @@ for k in kVec:
     # fit nearest neighbours classifier (with L2-norm)
     neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
     neigh.fit(dataTrain, targetTrain)
-`
+
     # find accuracy on test data
     acc = neigh.score(dataTest, targetTest)
     print('Accuracy for k = ' + str(k) + ' is ' + str(round(acc,4)))
