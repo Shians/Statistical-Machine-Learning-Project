@@ -1,16 +1,21 @@
 import csv
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
+import os
+
+
+full_train_path = os.path.join(os.getcwd(), "data", "train.csv")
+small_train_path = os.path.join(os.getcwd(), "data", "smallTrain.csv")
 
 useFull = True
 
 if (useFull):
     # import full training data set
-    with open('../data/train.csv', 'rb') as csvfile:
+    with open(full_train_path, 'rb') as csvfile:
         dataImport = np.loadtxt(csvfile, delimiter=',')
 else:
     # import small training data set
-    with open('../data/smallTrain.csv', 'rb') as csvfile:
+    with open(small_train_path, 'rb') as csvfile:
         dataImport = np.loadtxt(csvfile, delimiter=',')
 
 # size of data set
@@ -47,7 +52,7 @@ for k in kVec:
     # fit nearest neighbours classifier (with L2-norm)
     neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
     neigh.fit(dataTrain, targetTrain)
-
+`
     # find accuracy on test data
     acc = neigh.score(dataTest, targetTest)
     print('Accuracy for k = ' + str(k) + ' is ' + str(round(acc,4)))
