@@ -11,11 +11,11 @@ useFull = True
 
 if (useFull):
     # import full training data set
-    with open(full_train_path, 'r') as csvfile:
+    with open(full_train_path, 'rb') as csvfile:
         dataImport = np.loadtxt(csvfile, delimiter=',')
 else:
     # import small training data set
-    with open(small_train_path, 'r') as csvfile:
+    with open(small_train_path, 'rb') as csvfile:
         dataImport = np.loadtxt(csvfile, delimiter=',')
 
 # size of data set
