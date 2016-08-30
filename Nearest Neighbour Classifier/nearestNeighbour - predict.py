@@ -18,10 +18,10 @@ dataTest = dataTestImport[:, 9:439]
 idsTest = dataTestImport[:, 0]
 
 # number of neighbours from model selection
-k = 9
+k = 8
 
-# fit nearest neighbours classifier
-neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto')
+# fit nearest neighbours classifier (with L2-norm)
+neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
 neigh.fit(dataTrain, targetTrain)
 
 # predict test data
