@@ -1,13 +1,13 @@
-import csv
-import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
 import os
-
+import numpy as np
+from collections import Counter
+from sklearn.cross_validation import StratifiedShuffleSplit
+from sklearn.neighbors import KNeighborsClassifier
 
 full_train_path = os.path.join(os.getcwd(), "..", "data", "train.csv")
 small_train_path = os.path.join(os.getcwd(), "..", "data", "smallTrain.csv")
 
-useFull = False
+useFull = True
 
 if (useFull):
     # import full training data set
@@ -18,41 +18,42 @@ else:
     with open(small_train_path, 'rb') as csvfile:
         dataImport = np.loadtxt(csvfile, delimiter=',')
 
-# size of data set
-numSamples = len(dataImport)
-
 # randomize seed to reproduce results
 seed = np.random.randint(low = 1000, high = 9999, size = None)
 np.random.seed(seed)
 
 print('Seed is ' + str(seed))
 
-# permute data
-dataPermute = np.random.permutation(dataImport)
+# label with count > 1
+outcomes = [val[0] for val in Counter(dataImport[:,1]).items() if val[1] > 1]
 
-# extract bitmaps and character annotation
-data = dataPermute[:, 9:439]
-target = dataPermute[:, 1]
+# keep instances where label has count > 1
+keep = [i for i in range(dataImport.shape[0]) if dataImport[i,1] in outcomes]
+dataSub = dataImport[keep,:]
 
-# isolate portion of data for training
-trainPortion = 0.8
-trainSize = int(trainPortion * numSamples)
+# isolate stratified portion of data for training
+trainPortion = 0.7
+indicies = StratifiedShuffleSplit(dataSub[:,1], n_iter = 1, train_size = trainPortion, random_state = seed)
 
-dataTrain = data[0:trainSize]
-targetTrain = target[0:trainSize]
+for trainIndex, testIndex in indicies:
+    # portion of data for training
+    dataTrain = dataSub[trainIndex, 9:439]
+    targetTrain = dataSub[trainIndex, 1]
+    
+    # portion of data for testing
+    dataTest = dataSub[testIndex, 9:439]
+    targetTest = dataSub[testIndex, 1]
 
-# portion of data for testing
-dataTest = data[trainSize:]
-targetTest = target[trainSize:]
+# model selection to choose number of neighbours and L2 or L3 norm
+kVec = np.arange(1, 16, 1)
+pVec = np.arange(1, 4, 1)
 
-# model selection to choose number of neighbours
-kVec = np.arange(7, 12, 1)
+for p in pVec:
+    for k in kVec:
+        # fit nearest neighbours classifier
+        neigh = KNeighborsClassifier(n_neighbors = k, p = p, weights = 'uniform', algorithm = 'auto')
+        neigh.fit(dataTrain, targetTrain)
 
-for k in kVec:
-    # fit nearest neighbours classifier (with L2-norm)
-    neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
-    neigh.fit(dataTrain, targetTrain)
-
-    # find accuracy on test data
-    acc = neigh.score(dataTest, targetTest)
-    print('Accuracy for k = ' + str(k) + ' is ' + str(round(acc,4)))
+        # find accuracy on test data
+        acc = neigh.score(dataTest, targetTest)
+        print('Accuracy for p = ' + str(p) + ', k = ' + str(k) + ': ' + str(round(acc, 4)))
