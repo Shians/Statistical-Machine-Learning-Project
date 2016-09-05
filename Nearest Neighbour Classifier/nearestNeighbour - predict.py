@@ -33,6 +33,10 @@ neigh.fit(dataTrain, targetTrain)
 # predict test data
 testPredict = neigh.predict(dataTest)
 
+# delete output file if exists
+if os.path.exists('nearestNeighbourPredict.csv'):
+    os.remove('nearestNeighbourPredict.csv')
+
 # write output
 output = np.column_stack((idsTest, testPredict))
 np.savetxt('nearestNeighbourPredict.csv', output, fmt='%d', header="Id,Character", delimiter=",", comments="")
