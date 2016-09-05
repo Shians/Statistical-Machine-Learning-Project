@@ -1,8 +1,6 @@
-import csv
+import os
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-import os
-
 
 train_path = os.path.join(os.getcwd(), "..", "data", "train.csv")
 test_path = os.path.join(os.getcwd(), "..", "data", "test.csv")
@@ -25,8 +23,11 @@ idsTest = dataTestImport[:, 0]
 # number of neighbours from model selection
 k = 9
 
-# fit nearest neighbours classifier (with L2-norm)
-neigh = KNeighborsClassifier(n_neighbors = k, weights = 'uniform', algorithm = 'auto', p = 2)
+# norm from model selection
+p = 3
+
+# fit nearest neighbours classifier
+neigh = KNeighborsClassifier(n_neighbors = k, p = p, weights = 'uniform', algorithm = 'auto')
 neigh.fit(dataTrain, targetTrain)
 
 # predict test data
