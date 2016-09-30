@@ -180,3 +180,5 @@ TSWLatexianTemp*
 *~[0-9]*
 submission.csv
 svm_prediction.csv
+Testing_Probs.csv
+Training_Probs.csv

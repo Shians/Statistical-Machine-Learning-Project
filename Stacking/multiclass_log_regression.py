@@ -4,11 +4,11 @@ from sklearn.linear_model import LogisticRegression
 
 numBooks = 6
 
-train_path = os.path.join(os.getcwd(), "Dummy_Model_Output.csv")
+train_path = os.path.join(os.getcwd(), "Logistic_Input", "Training_Probs.csv")
 
 # import output from each model
 with open(train_path, 'rb') as csvfile:
-    dataImport = np.loadtxt(csvfile, delimiter=',', skiprows = 1)
+    dataImport = np.loadtxt(csvfile, delimiter=',')
 
 # accuracy for each book
 acc = [0]*numBooks
