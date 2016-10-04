@@ -15,10 +15,12 @@ ggsave(filename = "~/Documents/Statistical-Machine-Learning-Project/Nearest Neig
          stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
          labs(x = "Number of Neighbours (k)", y = "Cross Validation Accuracy") +
          guides(colour = guide_legend(override.aes = list(shape = 15, size = 10))) + 
-         coord_cartesian(ylim = c(0.5, 0.6)) +
+         coord_cartesian(ylim = c(0.48, 0.68)) +
+         scale_y_continuous(breaks = seq(from = 0.48, to = 0.68, by = 0.04)) +
          theme_bw() +
          theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
                axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
                axis.title.y = element_text(face = "bold", size = 28, margin = margin(0, 20, 0, 20)),
-               legend.title = element_blank(), legend.text = element_text(size = 24), legend.key = element_blank())
+               legend.title = element_blank(), legend.text = element_text(size = 24),
+               legend.key = element_blank(), legend.position = 'top')
 )
