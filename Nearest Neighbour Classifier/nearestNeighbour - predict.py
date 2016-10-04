@@ -20,10 +20,10 @@ targetTrain = dataTrainImport[:, 1]
 dataTest = dataTestImport[:, 9:439]
 idsTest = dataTestImport[:, 0]
 
-# number of neighbours from model selection
-k = 9
+# number of neighbours from cross validation
+k = 15
 
-# norm from model selection
+# norm from cross validation
 p = 3
 
 # fit nearest neighbours classifier
